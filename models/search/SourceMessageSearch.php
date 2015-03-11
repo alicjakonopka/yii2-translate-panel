@@ -436,7 +436,14 @@ class SourceMessageSearch extends SourceMessage
                     ->insert($sourceMessageTable, $sourceMessageData)
                     ->execute()
                 ;
-                $lastID = $db->getLastInsertID();
+                
+                if($db->driverName == 'pgsql'){
+                    $lastID = $db->getLastInsertID($sourceMessageTable . '_id_seq');
+                }
+                else{
+                    $lastID = $db->getLastInsertID();
+                }     
+                
                 foreach ($languages as $language) {
                     $messageData = [
                         'id'        => $lastID,
