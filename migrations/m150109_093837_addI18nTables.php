@@ -67,7 +67,7 @@ class m150109_093837_addI18nTables extends Migration
             }
 
             $this->dropTable($i18n->messageTable);
-            $this->dropTable($i18n->sourceMessageTable);            
+            $this->dropTable($i18n->sourceMessageTable); 
 
             return true;
         } else {

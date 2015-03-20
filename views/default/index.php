@@ -5,6 +5,7 @@
  */
 use uran1980\yii\modules\i18n\Module;
 use uran1980\yii\modules\i18n\components\grid\GridView;
+use uran1980\yii\modules\i18n\components\grid\SerialColumn;
 use uran1980\yii\modules\i18n\components\grid\ActionColumn;
 use uran1980\yii\modules\i18n\components\grid\DataColumn;
 use uran1980\yii\modules\i18n\models\search\SourceMessageSearch;
@@ -49,7 +50,7 @@ AppTranslateAsset::register($this);
         </div>
     </div>
     <h2>
-        <?php echo Html::encode($this->title); ?>
+        <?php echo Html::a($this->title, ['/translations']); ?>
         <span class="pull-right btn-group">
             <a class="btn btn-success" href="<?php
                 echo Url::to(['/translations/rescan']); ?>"><i class="fa fa-refresh"></i> <?php
@@ -69,19 +70,25 @@ AppTranslateAsset::register($this);
         'filterModel' => $searchModel,
         'dataProvider' => $searchModel->search(Yii::$app->getRequest()->get()),
         'columns' => [
+            // ----------------------------- ID --------------------------------
+//            [
+//                'attribute' => 'id',
+//                'headerOptions' => [
+//                    'width' => '30',
+//                ],
+//                'contentOptions' => [
+//                    'class' => 'text-align-center',
+//                ],
+//                'value' => function ($model, $key, $index, $dataColumn) {
+//                    return $model->id;
+//                },
+//                'filter' => false,
+////                'visible' => false,
+//            ],
             [
-                'attribute' => 'id',
-                'headerOptions' => [
-                    'width' => '30',
-                ],
-                'contentOptions' => [
-                    'class' => 'text-align-center',
-                ],
-                'value' => function ($model, $key, $index, $dataColumn) {
-                    return $model->id;
-                },
-                'filter' => false,
+                'class' => SerialColumn::className(),
             ],
+            // ----------------------- SOURCE MESSAGES -------------------------
             [
                 'attribute' => 'message',
                 'format' => 'raw',
@@ -97,6 +104,7 @@ AppTranslateAsset::register($this);
                     ]);
                 },
             ],
+            // ----------------------- COPY BUTTON -----------------------------
             [
                 'class'  => ActionColumn::className(),
                 'header' => '<i class="fa fa-copy"></i>',
@@ -114,6 +122,7 @@ AppTranslateAsset::register($this);
                     },
                 ],
             ],
+            // --------------------- MESSAGE TRANSLATIONS ----------------------
             [
                 'attribute' => 'translation',
                 'headerOptions' => [
@@ -132,6 +141,7 @@ AppTranslateAsset::register($this);
                 },
                 'format' => 'raw',
             ],
+            // --------------------------- CATEGORY ----------------------------
             [
                 'attribute' => 'category',
                 'headerOptions' => [
@@ -146,6 +156,7 @@ AppTranslateAsset::register($this);
                 'filter' => ArrayHelper::map($searchModel::getCategories(), 'category', 'category'),
                 'filterInputOptions' => DataColumn::$filterOptionsForChosenSelect,
             ],
+            // ---------------------------- STATUS -----------------------------
             [
                 'attribute' => 'status',
                 'headerOptions' => [
@@ -163,6 +174,7 @@ AppTranslateAsset::register($this);
                 ),
                 'visible' => false,
             ],
+            // --------------------------- ACTIONS -----------------------------
             [
                 'class' => ActionColumn::className(),
                 'template' => '{save} {fullscreen} {delete}',
@@ -221,6 +233,7 @@ AppTranslateAsset::register($this);
                     },
                 ],
             ],
+            // --------------------------- LOCATIONS ---------------------------
             [
                 'attribute' => 'location',
                 'value' => function ($model, $key, $index, $dataColumn) {
